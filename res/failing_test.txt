@@ -1,0 +1,19 @@
+Run options: --seed 53992
+
+# Running tests:
+
+.F..
+
+Finished tests in 0.421388s, 9.4924 tests/s, 9.4924 assertions/s.
+
+  1) Failure:
+bsd tar archive::when extracted with minittar#test_0001_will not produce extra files [chef-bsdtar_issue/test/minitest/test_bsdarchive.rb:14]:
+--- expected
++++ actual
+@@ -1 +1,2 @@
+-"helloworld.rb"
++"PaxHeader
++helloworld.rb"
+
+
+4 tests, 4 assertions, 1 failures, 0 errors, 0 skips
