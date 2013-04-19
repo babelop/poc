@@ -1,13 +1,13 @@
-Run options: --seed 53992
+Run options: --seed 61945
 
 # Running tests:
 
-.F..
+..F...
 
-Finished tests in 0.421388s, 9.4924 tests/s, 9.4924 assertions/s.
+Finished tests in 0.050244s, 119.4172 tests/s, 119.4172 assertions/s.
 
   1) Failure:
-bsd tar archive::when extracted with minittar#test_0001_will not produce extra files [chef-bsdtar_issue/test/minitest/test_bsdarchive.rb:14]:
+bsd tar archive::when extracted with minittar#test_0001_will not produce extra files [bsdtar_issue/test/minitest/test_bsdarchive.rb:20]:
 --- expected
 +++ actual
 @@ -1 +1,2 @@
@@ -16,4 +16,4 @@ bsd tar archive::when extracted with minittar#test_0001_will not produce extra f
 +helloworld.rb"
 
 
-4 tests, 4 assertions, 1 failures, 0 errors, 0 skips
+6 tests, 6 assertions, 1 failures, 0 errors, 0 skips

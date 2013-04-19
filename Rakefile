@@ -1,11 +1,16 @@
 require 'rake/clean'
 require 'archive/tar/minitar'
+require 'rbconfig'
 
 CLEAN.include('build/*')
 CLEAN.exclude('build/*.tar')
 CLOBBER.include('build/*')
 
 basepath = File::dirname(__FILE__)
+
+unless RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+  abort("These tests require bsdtar and need to be performed under Mac OS.")
+end
 
 task :build_tars => :clobber do
   %x{
@@ -20,13 +25,26 @@ task :build_tars => :clobber do
   }
 end
 
-task :extract_tar => :clean do
-  Dir.mkdir("#{basepath}/build/extract_bintar")
-  Dir.mkdir("#{basepath}/build/extract_bintar/bsdarchive")
-  Dir.mkdir("#{basepath}/build/extract_bintar/gnuarchive")
+task :extract_bsdtar => :clean do
+  Dir.mkdir("#{basepath}/build/extract_bsdtar")
+  Dir.mkdir("#{basepath}/build/extract_bsdtar/bsdarchive")
+  Dir.mkdir("#{basepath}/build/extract_bsdtar/gnuarchive")
   %x{
     set -e
-    cd build/extract_bintar/bsdarchive
+    cd build/extract_bsdtar/bsdarchive
+    tar -xf ../../bsdtar-archive.tar
+    cd ../gnuarchive
+    tar -xf ../../gnutar-archive.tar
+  }
+end
+
+task :extract_gnutar => :clean do
+  Dir.mkdir("#{basepath}/build/extract_gnutar")
+  Dir.mkdir("#{basepath}/build/extract_gnutar/bsdarchive")
+  Dir.mkdir("#{basepath}/build/extract_gnutar/gnuarchive")
+  %x{
+    set -e
+    cd build/extract_gnutar/bsdarchive
     tar -xf ../../bsdtar-archive.tar
     cd ../gnuarchive
     tar -xf ../../gnutar-archive.tar
@@ -41,7 +59,7 @@ task :extract_minitar => :clean do
   Archive::Tar::Minitar.unpack("#{basepath}/build/gnutar-archive.tar", "#{basepath}/build/extract_minitar/gnuarchive/")
 end
 
-task :untar => [ :extract_tar, :extract_minitar ]
+task :untar => [ :extract_bsdtar, :extract_gnutar, :extract_minitar ]
 
 task :test => :untar do
   require "#{basepath}/test/minitest/test_bsdarchive.rb"
